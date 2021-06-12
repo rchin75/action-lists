@@ -1,4 +1,4 @@
-const {createApp, getConfig} = require('./lib/server');
+const {createApp, getConfig} = require('simple-server');
 
 const config = getConfig();
 const app = createApp();
