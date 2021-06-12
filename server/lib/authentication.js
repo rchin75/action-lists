@@ -1,6 +1,6 @@
 const {config} = require('./config');
 const passport = require('passport');
-const {authenticateUser} = require('./users/userManagement');
+const {authenticateUser} = require('./userManagement');
 const LocalStrategy = require('passport-local').Strategy;
 
 // Configure local authentication.
