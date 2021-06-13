@@ -16,8 +16,17 @@
         </f7-popover>
 
         <!-- Page content -->
-        <f7-list>
-
+        <f7-list media-list>
+            <f7-list-item
+                    v-for="(row,index) in data" :key="index"
+                    v-bind:title="getDataValue('title', row)"
+                    v-bind:subtitle="getDataValue('subtitle', row)"
+                    v-bind:footer="getDataValue('footer', row)"
+                    v-bind:text="getDataValue('text', row)"
+                    v-bind:after="getDataValue('after', row)"
+                    @click="onOpen(row)"
+                    link="#">
+            </f7-list-item>
         </f7-list>
 
     </f7-page>
@@ -26,9 +35,11 @@
     import {ref} from "vue";
     import { onMounted } from 'vue';
     import useAuthentication from "../model/useAuthentication";
+    import useSpreadSheet from "../model/useSpreadSheet";
     const {logout, initializeLogin} = useAuthentication();
+    const {readFile, data, dataConfig} = useSpreadSheet();
 
-    /** True to open the file details popup. */
+    /** True to open the details popup. */
     const popupOpened = ref(false);
 
     export default {
@@ -40,7 +51,8 @@
             onMounted(() => {
                 console.log('mounted!');
                 initializeLogin(()=>{
-                    // TODO Initialize data
+                    // Initialize data
+                    readFile();
                 }, ()=>{
                     props.f7router.navigate('/login');
                 })
@@ -55,9 +67,35 @@
                 });
             }
 
+            /**
+             * Gets the data value.
+             * @param type Type.
+             * @param row Data row.
+             * @return {null|*}
+             */
+            function getDataValue(type, row) {
+                const card = dataConfig.value.card;
+                if (Object.prototype.hasOwnProperty.call(card, type)) {
+                    return row[card[type]];
+                }
+                return null;
+            }
+
+            /**
+             * On open row.
+             * @param row The selected row to open.
+             */
+            function onOpen(row) {
+                console.log('onOpen', row);
+            }
+
             return {
                 onLogout,
                 popupOpened,
+                data,
+                dataConfig,
+                getDataValue,
+                onOpen
             };
         }
     }

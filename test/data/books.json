@@ -1,0 +1,10 @@
+{
+  "rowIndex": true,
+  "card": {
+    "title": "Title",
+    "subtitle": "Subtitle",
+    "footer": "Authors",
+    "text": null,
+    "after": "Year"
+  }
+}
