@@ -1,7 +1,7 @@
 <template>
     <f7-page name="home">
         <!-- The NavBar -->
-        <f7-navbar title="Action Lists">
+        <f7-navbar v-bind:title="(dataConfig && dataConfig.title) ? dataConfig.title : 'Action Lists'">
             <f7-nav-right>
                 <f7-link icon-f7="bars" popover-open=".popover-menu"></f7-link>
             </f7-nav-right>
@@ -29,6 +29,13 @@
             </f7-list-item>
         </f7-list>
 
+        <!-- A popup with file details. -->
+        <f7-popup theme-dark color-theme="orange"
+                  class="row-details-popup"
+                  :opened="popupOpened"
+                  @popup:closed="popupOpened = false">
+            <details-panel v-bind:selected-row="selectedRow"></details-panel>
+        </f7-popup>
     </f7-page>
 </template>
 <script>
@@ -36,14 +43,18 @@
     import { onMounted } from 'vue';
     import useAuthentication from "../model/useAuthentication";
     import useSpreadSheet from "../model/useSpreadSheet";
+    import DetailsPanel from "../components/detailsPanel";
     const {logout, initializeLogin} = useAuthentication();
     const {readFile, data, dataConfig} = useSpreadSheet();
 
     /** True to open the details popup. */
     const popupOpened = ref(false);
 
+    /** The selected row. */
+    const selectedRow = ref(null);
+
     export default {
-        components: {},
+        components: {DetailsPanel},
         props: {
             f7router: Object
         },
@@ -87,6 +98,8 @@
              */
             function onOpen(row) {
                 console.log('onOpen', row);
+                selectedRow.value = row;
+                popupOpened.value = true;
             }
 
             return {
@@ -95,7 +108,8 @@
                 data,
                 dataConfig,
                 getDataValue,
-                onOpen
+                onOpen,
+                selectedRow
             };
         }
     }

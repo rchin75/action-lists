@@ -1,10 +1,21 @@
 {
+  "title": "Book list",
   "rowIndex": true,
+  "sort": "Title",
   "card": {
     "title": "Title",
     "subtitle": "Subtitle",
     "footer": "Authors",
     "text": null,
     "after": "Year"
-  }
+  },
+  "fields": [
+    {"name": "Title"},
+    {"name": "Subtitle"},
+    {"name": "Authors"},
+    {"name": "Year"},
+    {"name": "Publisher"},
+    {"name": "Place"},
+    {"name": "Pages"}
+  ]
 }

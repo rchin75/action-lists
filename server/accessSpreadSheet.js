@@ -32,6 +32,7 @@ module.exports.readFile = async function(req, res) {
     };
     const header = {}
     let index = 0;
+    const data = [];
     worksheet.eachRow(function(row, rowNumber) {
         if (rowNumber === 1) {
             for (let i = 1; i<row.values.length; i++) {
@@ -43,10 +44,17 @@ module.exports.readFile = async function(req, res) {
             for (let i = 1; i<row.values.length; i++) {
                 record[header[i]] = row.values[i];
             }
-            json.data.push(record);
+            data.push(record);
         }
         //console.log('Row ' + rowNumber + ' = ' + JSON.stringify(row.values));
     });
 
+    if (config.sort) {
+        // For more advanced sorting options such as sorting on multiple attributes, ASC/DESC
+        // see: https://stackoverflow.com/questions/1129216/sort-array-of-objects-by-string-property-value
+        // For now we do it the simplest way: sort on one field ascending.
+        data.sort((a,b) => (a[config.sort] > b[config.sort]) ? 1 : ((b[config.sort] > a[config.sort]) ? -1 : 0))
+    }
+    json.data = data;
     res.json(json);
 }
