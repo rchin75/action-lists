@@ -17,13 +17,15 @@ export default function useSpreadSheet() {
     const data = computed(() => state.data);
     const dataConfig = computed(() => state.dataConfig);
 
+    /**
+     * Reads the spreadsheet as specified on the server.
+     * @return {Promise<void>}
+     */
     async function readFile() {
-        console.log('readFile');
         f7.preloader.show();
         const url = 'api/readFile';
         try {
             const result = await axios.get(url);
-            console.log('readFile2', result.data);
             f7.preloader.hide();
             if (result.data) {
                 state.data = result.data.data;

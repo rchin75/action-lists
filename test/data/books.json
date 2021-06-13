@@ -1,4 +1,6 @@
 {
+  "file": "books.xlsx",
+  "sheet": "Sheet1",
   "title": "Book list",
   "rowIndex": true,
   "sort": "Title",
