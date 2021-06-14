@@ -8,7 +8,10 @@ const fs = require('fs');
  */
 module.exports.getMenu = function (req,res) {
     const menuFile = process.env.MENU_FILE;
-    console.log(menuFile);
+    if (!menuFile || (menuFile === '')) {
+        // If no menu file was specified at all we send back an empty menu.
+        return res.json({menu:[]});
+    }
     if (!fs.existsSync(menuFile)) {
         return res.status(400).json({error: 'Menu file not found.'})
     }

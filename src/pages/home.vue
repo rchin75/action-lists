@@ -75,7 +75,11 @@
                 console.log('mounted!');
                 initializeLogin(()=>{
                     // Initialize data
-                    getMenu().then(()=>{
+                    getMenu().then((menu)=>{
+                        // Open the first menu item if specified.
+                        // Otherwise the server will fall back to the default file.
+                        readFile(menu && menu.length > 0 ? menu[0].file : null);
+                    }).catch(()=>{
                         readFile();
                     })
                 }, ()=>{

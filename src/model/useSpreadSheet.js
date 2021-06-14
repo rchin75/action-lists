@@ -29,7 +29,7 @@ export default function useSpreadSheet() {
         try {
             const result = await axios.get(url);
             f7.preloader.hide();
-            if (result.data) {
+            if (result.data && result.data.menu) {
                 state.menu = result.data.menu;
             }
             return state.menu;
@@ -43,7 +43,7 @@ export default function useSpreadSheet() {
 
     /**
      * Reads the spreadsheet as specified on the server.
-     * @param filename The filename.
+     * @param [filename] The filename.
      * @return {Promise<void>}
      */
     async function readFile(filename) {

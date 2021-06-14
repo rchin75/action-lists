@@ -12,10 +12,11 @@ module.exports.readFile = async function(req, res) {
     const f = req.query.filename;
 
     // The JSON file with the configuration.
-    // TODO this is a bit of a quick fix. Needs attention. We need a CONFIG_DIR, not a CONFIG_FILE.
+    // If no menu file was specified then we use the CONFIG_FILE. Otherwise we use MENU_FILE.
     let configFile = process.env.CONFIG_FILE;
-    if (f && f.length > 0 && f.indexOf('/') === -1) {
-        configFile = path.join( path.dirname(configFile) ,  f);
+    const menuFile = process.env.MENU_FILE;
+    if (menuFile && f && f.length > 0 && (f.indexOf('/') === -1) && (f.split('.').pop() === 'json')) {
+        configFile = path.join( path.dirname(menuFile) ,  f);
     }
 
     // Read the config file.
