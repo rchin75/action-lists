@@ -1,0 +1,16 @@
+{
+  "menu": [
+    {
+      "title": "Books",
+      "file": "books.json"
+    },
+    {
+      "title": "Dummy",
+      "file": "dummy.json"
+    },
+    {
+      "title": "Dummy2",
+      "file": "dummy2.json"
+    }
+  ]
+}

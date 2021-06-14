@@ -1,9 +1,13 @@
 <template>
     <f7-page name="home">
         <!-- The NavBar -->
-        <f7-navbar v-bind:title="(dataConfig && dataConfig.title) ? dataConfig.title : 'Action Lists'">
+        <f7-navbar>
+            <f7-nav-left>
+                <f7-link icon-f7="bars" panel-open="left"></f7-link>
+            </f7-nav-left>
+            <f7-nav-title v-bind:title="(dataConfig && dataConfig.title) ? dataConfig.title : 'Action Lists'"></f7-nav-title>
             <f7-nav-right>
-                <f7-link icon-f7="bars" popover-open=".popover-menu"></f7-link>
+                <f7-link icon-f7="ellipsis_vertical" popover-open=".popover-menu"></f7-link>
             </f7-nav-right>
         </f7-navbar>
 
@@ -36,6 +40,13 @@
                   @popup:closed="popupOpened = false">
             <details-panel v-bind:selected-row="selectedRow"></details-panel>
         </f7-popup>
+
+        <!-- Left resizable Panel with Reveal effect -->
+        <f7-panel left reveal resizable theme-dark color-theme="orange">
+            <f7-view>
+                <left-panel></left-panel>
+            </f7-view>
+        </f7-panel>
     </f7-page>
 </template>
 <script>
@@ -44,8 +55,9 @@
     import useAuthentication from "../model/useAuthentication";
     import useSpreadSheet from "../model/useSpreadSheet";
     import DetailsPanel from "../components/detailsPanel";
+    import LeftPanel from "../components/leftPanel";
     const {logout, initializeLogin} = useAuthentication();
-    const {readFile, data, dataConfig} = useSpreadSheet();
+    const {getMenu, readFile, data, dataConfig} = useSpreadSheet();
 
     /** True to open the details popup. */
     const popupOpened = ref(false);
@@ -54,7 +66,7 @@
     const selectedRow = ref(null);
 
     export default {
-        components: {DetailsPanel},
+        components: {LeftPanel, DetailsPanel},
         props: {
             f7router: Object
         },
@@ -63,7 +75,9 @@
                 console.log('mounted!');
                 initializeLogin(()=>{
                     // Initialize data
-                    readFile();
+                    getMenu().then(()=>{
+                        readFile();
+                    })
                 }, ()=>{
                     props.f7router.navigate('/login');
                 })

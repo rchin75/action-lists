@@ -9,13 +9,33 @@ import {f7} from "framework7-vue";
  */
 const state = reactive({
     data: null,
-    dataConfig: null
+    dataConfig: null,
+    menu: []
 });
 
 export default function useSpreadSheet() {
 
+    const menu = computed(() => state.menu);
     const data = computed(() => state.data);
     const dataConfig = computed(() => state.dataConfig);
+
+    async function getMenu() {
+        f7.preloader.show();
+        const url = 'api/getMenu';
+        try {
+            const result = await axios.get(url);
+            f7.preloader.hide();
+            if (result.data) {
+                state.menu = result.data.menu;
+            }
+            return state.menu;
+        } catch(ex) {
+            console.log('getMenu error', ex);
+            f7.preloader.hide();
+            notify('Error', 'Could not get menu items from server');
+            throw (ex);
+        }
+    }
 
     /**
      * Reads the spreadsheet as specified on the server.
@@ -41,8 +61,10 @@ export default function useSpreadSheet() {
     }
 
     return {
+        menu,
         data,
         dataConfig,
+        getMenu,
         readFile
     }
 }
