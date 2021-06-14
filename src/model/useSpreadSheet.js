@@ -19,6 +19,10 @@ export default function useSpreadSheet() {
     const data = computed(() => state.data);
     const dataConfig = computed(() => state.dataConfig);
 
+    /**
+     * Gets the menu items.
+     * @return {Promise<void>}
+     */
     async function getMenu() {
         f7.preloader.show();
         const url = 'api/getMenu';
@@ -39,13 +43,18 @@ export default function useSpreadSheet() {
 
     /**
      * Reads the spreadsheet as specified on the server.
+     * @param filename The filename.
      * @return {Promise<void>}
      */
-    async function readFile() {
+    async function readFile(filename) {
         f7.preloader.show();
         const url = 'api/readFile';
+        const params = {
+            filename : filename ? filename : ''
+        }
+
         try {
-            const result = await axios.get(url);
+            const result = await axios.get(url, {params});
             f7.preloader.hide();
             if (result.data) {
                 state.data = result.data.data;

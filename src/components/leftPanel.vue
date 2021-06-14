@@ -15,7 +15,7 @@
 </template>
 <script>
     import useSpreadSheet from "../model/useSpreadSheet";
-    const {menu} = useSpreadSheet();
+    const {menu, readFile} = useSpreadSheet();
 
     export default {
         name: 'left-panel',
@@ -24,6 +24,7 @@
 
             function onOpen(item) {
                 console.log('Opening', item);
+                readFile(item.file);
             }
 
             return {

@@ -9,8 +9,14 @@ const path = require('path');
  * @return {Promise<void>}
  */
 module.exports.readFile = async function(req, res) {
+    const f = req.query.filename;
+
     // The JSON file with the configuration.
-    const configFile = process.env.CONFIG_FILE;
+    // TODO this is a bit of a quick fix. Needs attention. We need a CONFIG_DIR, not a CONFIG_FILE.
+    let configFile = process.env.CONFIG_FILE;
+    if (f && f.length > 0 && f.indexOf('/') === -1) {
+        configFile = path.join( path.dirname(configFile) ,  f);
+    }
 
     // Read the config file.
     let config = null;
