@@ -56,6 +56,8 @@
     import useSpreadSheet from "../model/useSpreadSheet";
     import DetailsPanel from "../components/detailsPanel";
     import LeftPanel from "../components/leftPanel";
+    import { formatDate, formatTime } from "../filters";
+
     const {logout, initializeLogin} = useAuthentication();
     const {getMenu, readFile, data, dataConfig} = useSpreadSheet();
 
@@ -103,9 +105,20 @@
              * @return {null|*}
              */
             function getDataValue(type, row) {
+                const config = dataConfig.value;
                 const card = dataConfig.value.card;
                 if (Object.prototype.hasOwnProperty.call(card, type)) {
-                    return row[card[type]];
+                    let value = row[card[type]];
+                    if (value && config.fieldsMap) {
+                        const field = config.fieldsMap[card[type]];
+                        if (field.type === 'DATE') {
+                            value = formatDate(new Date(value));
+                        } else if (field.type === 'TIME') {
+                            value = formatTime(new Date(value));
+                        }
+                    }
+
+                    return value;
                 }
                 return null;
             }

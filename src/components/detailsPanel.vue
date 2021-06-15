@@ -9,13 +9,14 @@
             <f7-list-item
                 v-for="(field, index) in getFields()" :key="index"
                 v-bind:header="field.name"
-                v-bind:title="selectedRow ? selectedRow[field.name] : ''"
+                v-bind:title="selectedRow ? format(selectedRow[field.name], field.type ): ''"
             ></f7-list-item>
         </f7-list>
     </f7-page>
 </template>
 <script>
     import useSpreadSheet from "../model/useSpreadSheet";
+    import { formatDate, formatTime } from "../filters";
     const {dataConfig} = useSpreadSheet();
 
     export default {
@@ -34,9 +35,31 @@
                 return [];
             }
 
+            /**
+             * Formats a value.
+             * @param value Value.
+             * @param type Type.
+             * @return {*}
+             */
+            function format(value, type) {
+                let formatted;
+                switch (type) {
+                    case 'DATE':
+                        formatted = formatDate(new Date(value));
+                        break;
+                    case 'TIME':
+                        formatted = formatTime(new Date(value));
+                        break;
+                    default:
+                        formatted = value;
+                }
+                return formatted;
+            }
+
             return {
                 dataConfig,
-                getFields
+                getFields,
+                format
             }
         }
     }

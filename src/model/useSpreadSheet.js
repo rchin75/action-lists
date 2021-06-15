@@ -58,7 +58,7 @@ export default function useSpreadSheet() {
             f7.preloader.hide();
             if (result.data) {
                 state.data = result.data.data;
-                state.dataConfig = result.data.config;
+                state.dataConfig = processConfig(result.data.config);
             }
             return state.data;
         } catch (ex) {
@@ -67,6 +67,23 @@ export default function useSpreadSheet() {
             notify('Error', 'Could not read data from server');
             throw (ex);
         }
+    }
+
+    /**
+     * Process the data config.
+     * @param config The config.
+     * @return {*}
+     */
+    function processConfig(config) {
+        if (!config.fields) {
+            return config;
+        }
+        const fieldsMap = {};
+        config.fields.forEach(field => {
+            fieldsMap[field.name] = field;
+        });
+        config['fieldsMap'] = fieldsMap;
+        return config;
     }
 
     return {

@@ -1,0 +1,20 @@
+{
+  "file": "speakers.xlsx",
+  "sheet": "Sheet1",
+  "title": "Speakers",
+  "rowIndex": true,
+  "sort": null,
+  "card": {
+    "title": "Topic",
+    "subtitle": "Speaker",
+    "footer": "Time",
+    "text": null,
+    "after": "Date"
+  },
+  "fields": [
+    {"name": "Date", "type": "DATE"},
+    {"name": "Time", "type": "TIME"},
+    {"name": "Speaker"},
+    {"name": "Topic"}
+  ]
+}
