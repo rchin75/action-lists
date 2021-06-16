@@ -1,6 +1,6 @@
 <template>
     <f7-page>
-        <f7-navbar v-bind:title="(selectedRow && dataConfig) ? selectedRow[dataConfig.fields[0].name] : ''">
+        <f7-navbar v-bind:title="getTitle()">
             <f7-nav-right>
                 <f7-link popup-close>Close</f7-link>
             </f7-nav-right>
@@ -22,7 +22,7 @@
     export default {
         name: 'details-panel',
         props: ['selectedRow'],
-        setup() {
+        setup(props) {
 
             /**
              * Gets the available fields.
@@ -56,10 +56,28 @@
                 return formatted;
             }
 
+            /**
+             * Gets the title.
+             */
+            function getTitle() {
+                let title = 'Details';
+                if (props.selectedRow && dataConfig) {
+                    const selectedRow = props.selectedRow
+                    const config = dataConfig.value;
+                    if (config.mainField) {
+                        title = selectedRow[config.fieldsMap[config.mainField].name];
+                    } else if (config.fields && (config.fields.length > 0)){
+                        title = selectedRow[config.fields[0].name];
+                    }
+                }
+                return title;
+            }
+
             return {
                 dataConfig,
                 getFields,
-                format
+                format,
+                getTitle
             }
         }
     }

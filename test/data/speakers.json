@@ -4,6 +4,7 @@
   "title": "Speakers",
   "rowIndex": true,
   "sort": null,
+  "mainField": "Topic",
   "card": {
     "title": "Topic",
     "subtitle": "Speaker",

@@ -128,7 +128,6 @@
              * @param row The selected row to open.
              */
             function onOpen(row) {
-                console.log('onOpen', row);
                 selectedRow.value = row;
                 popupOpened.value = true;
             }
